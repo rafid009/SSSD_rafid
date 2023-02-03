@@ -51,7 +51,7 @@ log = get_logger(__name__)
 """ Cauchy kernel """
 
 try: # Try CUDA extension
-    from src.entensions.cauchy.cauchy import cauchy_mult
+    from entensions.cauchy.cauchy import cauchy_mult
     # from extensions.cauchy.cauchy import cauchy_mult
     has_cauchy_extension = True
 except:
@@ -1049,8 +1049,8 @@ class S4(nn.Module):
 
         super().__init__()
         if verbose:
-            import src.utils.train
-            log = src.utils.train.get_logger(__name__)
+            import utils
+            log = utils.train.get_logger(__name__)
             log.info(f"Constructing S4 (H, N, L) = ({d_model}, {d_state}, {l_max})")
 
         self.h = d_model

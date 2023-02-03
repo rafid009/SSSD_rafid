@@ -3,7 +3,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from utils.util import calc_diffusion_step_embedding
-from src.imputers.S4Model import S4Layer
+from imputers.S4Model import S4Layer
 
 
 def swish(x):
