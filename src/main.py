@@ -55,7 +55,7 @@ def train(output_directory,
     output_directory = os.path.join(output_directory, local_path)
     if not os.path.isdir(output_directory):
         os.makedirs(output_directory)
-        # os.chmod(output_directory, 0o775)
+        os.chmod(output_directory, 0o775)
     print("output directory", output_directory, flush=True)
 
     # map diffusion hyperparameters to gpu
@@ -194,4 +194,4 @@ diffusion_hyperparams = calc_diffusion_hyperparams(
 # For SSSDS4
 model_config = config['wavenet_config']
 
-net = SSSDS4Imputer(**model_config).cuda()
+train(**train_config)
