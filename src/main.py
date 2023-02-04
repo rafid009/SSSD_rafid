@@ -172,14 +172,15 @@ test_X = X[-2:]
 input_folder = './datasets/agaid'
 if not os.path.isdir(input_folder):
     os.makedirs(input_folder)
-    
+
 np.save(f"{input_folder}/train_agaid.npy", train_X)
 np.save(f"{input_folder}/test_agaid.npy", test_X)
 
 config_path = "./config/config_SSSDS4.json"
 
-config = json.load(config_path)
-print(config)
+with open(config_path) as f:
+    config = json.load(f)
+    print(config)
 
 train_config = config["train_config"]  # training parameters
 
