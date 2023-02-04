@@ -6,12 +6,12 @@ import json
 import torch
 import torch.nn as nn
 
-from utils.util import find_max_epoch, print_size, training_loss, calc_diffusion_hyperparams
-from utils.util import get_mask_mnr, get_mask_bm, get_mask_rm
+# from utils.util import find_max_epoch, print_size, training_loss, calc_diffusion_hyperparams
+# from utils.util import get_mask_mnr, get_mask_bm, get_mask_rm
 
-from imputers.DiffWaveImputer import DiffWaveImputer
-from imputers.SSSDSAImputer import SSSDSAImputer
-from imputers.SSSDS4Imputer import SSSDS4Imputer
+# from imputers.DiffWaveImputer import DiffWaveImputer
+# from imputers.SSSDSAImputer import SSSDSAImputer
+# from imputers.SSSDS4Imputer import SSSDS4Imputer
 
 
 
@@ -155,7 +155,7 @@ def train(output_directory,
 
             n_iter += 1
 
-filename = "ColdHardiness_Grape_Merlot_2.csv"
+filename = "./src/ColdHardiness_Grape_Merlot_2.csv"
 df = pd.read_csv(filename)
 
 modified_df, dormant_seasons = preprocess_missing_values(df, features, is_dormant=True)
@@ -172,11 +172,11 @@ test_X = X[-2:]
 input_folder = './datasets/agaid'
 if not os.path.isdir(input_folder):
     os.makedirs(input_folder)
-
+    
 np.save(f"{input_folder}/train_agaid.npy", train_X)
 np.save(f"{input_folder}/test_agaid.npy", test_X)
 
-config_path = "./src/config/config_SSSDS4.json"
+config_path = "./config/config_SSSDS4.json"
 
 config = json.load(config_path)
 print(config)
