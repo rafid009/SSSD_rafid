@@ -32,8 +32,8 @@
         "missing_k": 90
     },
     "trainset_config":{
-        "train_data_path": "./datasets/train_agaid.npy",
-        "test_data_path": "./datasets/test_agaid.npy",
+        "train_data_path": "./datasets/agaid/train_agaid.npy",
+        "test_data_path": "./datasets/agaid/test_agaid.npy",
         "segment_length":100,
         "sampling_rate": 100
     },
