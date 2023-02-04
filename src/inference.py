@@ -88,7 +88,7 @@ def generate(output_directory,
     ### Custom data loading and reshaping ###
     
     testing_data = np.load(trainset_config['test_data_path'])
-    testing_data = np.split(testing_data, 4, 0)
+    testing_data = np.array_split(testing_data, 2, axis=0)
     testing_data = np.array(testing_data)
     testing_data = torch.from_numpy(testing_data).float().cuda()
     print('Data loaded')

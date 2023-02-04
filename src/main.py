@@ -107,7 +107,7 @@ def train(output_directory,
         
 
     training_data = np.load(trainset_config['train_data_path'])
-    training_data = np.split(training_data, 160, 0)
+    training_data = np.array_split(training_data, 2, axis=0)
     training_data = np.array(training_data)
     training_data = torch.from_numpy(training_data).float().cuda()
     print('Data loaded')
