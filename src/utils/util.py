@@ -291,6 +291,7 @@ def parse_data(sample, rate=0.2, is_test=False, length=100, include_features=Non
     mask = mask.astype(float)
     obs_mask = obs_mask.astype(float)
     target_mask = obs_mask - mask
+    print(f"obs: {obs_mask.shape}, mask: {mask.shape}, target: {mask.shape}")
     return obs_data, obs_mask, mask, target_mask
 
 def get_mask_mnr(sample, k):
