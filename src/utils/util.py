@@ -203,7 +203,6 @@ def get_mask_rm(sample, k):
     """Get mask of random points (missing at random) across channels based on k,
     where k == number of data points. Mask of sample's shape where 0's to be imputed, and 1's to preserved
     as per ts imputers"""
-
     mask = torch.ones(sample.shape)
     length_index = torch.tensor(range(mask.shape[0]))  # lenght of series indexes
     for channel in range(mask.shape[1]):
@@ -213,6 +212,84 @@ def get_mask_rm(sample, k):
 
     return mask
 
+def partial_bm(sample, selected_features, length_range, n_chunks):
+    length = np.random.randint(length_range[0], length_range[1] + 1)
+    k = length
+    # mask = ~np.isnan(sample) * 1.0
+    length_index = torch.tensor(range(sample.shape[0]))
+    list_of_segments_index = torch.split(length_index, k)
+    s_nan = np.random.choice(list_of_segments_index, n_chunks, replace=False)
+    gt_intact = sample.copy()
+    # print(f"feats: {mask[selected_features]}")
+    # print(f"snan: {s_nan}")
+    # print(f"mask: {mask[selected_features][s_nan[0]:(s_nan[-1] + 1)]}")
+    for chunk in range(n_chunks):
+        # mask[selected_features][s_nan[chunk][0]:s_nan[chunk][-1] + 1] = 0
+        gt_intact[s_nan[chunk][0]:s_nan[chunk][-1] + 1, selected_features] = np.nan
+        # print(f"gt: {gt_intact}\ngt_snan: {gt_intact[s_nan[chunk][0]:s_nan[chunk][-1] + 1, selected_features]}")
+    obs_data = np.nan_to_num(sample, copy=True)
+    mask = ~np.isnan(gt_intact) * 1.0
+    # print(f"mask 1: {mask}")
+    return obs_data, mask, gt_intact
+
+def parse_data(sample, rate=0.2, is_test=False, length=100, include_features=None, forward_trial=-1, lte_idx=None, random_trial=False, pattern=None,  partial_bm_config=None):
+    """Get mask of random points (missing at random) across channels based on k,
+    where k == number of data points. Mask of sample's shape where 0's to be imputed, and 1's to preserved
+    as per ts imputers"""
+    if isinstance(sample, torch.Tensor):
+        sample = sample.numpy()
+
+    obs_mask = ~np.isnan(sample)
+    if not is_test:
+        shp = sample.shape
+        evals = sample.reshape(-1).copy()
+        indices = np.where(~np.isnan(evals))[0].tolist()
+        indices = np.random.choice(indices, int(len(indices) * rate))
+        values = evals.copy()
+        values[indices] = np.nan
+        mask = ~np.isnan(values)
+        mask = mask.reshape(shp)
+        obs_data = np.nan_to_num(evals, copy=True)
+        obs_data = obs_data.reshape(shp)
+    elif random_trial:
+        evals = sample.copy()
+        values = evals.copy()
+        for i in range(evals.shape[1]):
+            indices = np.where(~np.isnan(evals[:, i]))[0].tolist()
+            indices = np.random.choice(indices, int(len(indices) * rate))
+            values[indices, i] = np.nan
+        mask = ~np.isnan(values)
+        obs_data = np.nan_to_num(evals, copy=True)
+    elif forward_trial != -1:
+        indices = np.where(~np.isnan(sample[:, lte_idx]))[0].tolist()
+        start = indices[forward_trial]
+        obs_data = np.nan_to_num(sample, copy=True)
+        gt_intact = sample.copy()
+        gt_intact[start:, :] = np.nan
+        mask = ~np.isnan(gt_intact)
+    elif partial_bm_config is not None:
+        total_features = np.arange(sample.shape[1])
+        features = np.random.choice(total_features, partial_bm_config['features'])
+        obs_data, mask, gt_intact = partial_bm(sample, features, partial_bm_config['length_range'], partial_bm_config['n_chunks'])
+    else:
+        shp = sample.shape
+        evals = sample.reshape(-1).copy()
+        a = np.arange(sample.shape[0] - length)
+        # print(f"a: {a}\nsample: {sample.shape}")
+        start_idx = np.random.choice(a)
+        # print(f"random choice: {start_idx}")
+        end_idx = start_idx + length
+        obs_data_intact = sample.copy()
+        if include_features is None or len(include_features) == 0:
+            obs_data_intact[start_idx:end_idx, :] = np.nan
+        else:
+            obs_data_intact[start_idx:end_idx, include_features] = np.nan
+        mask = ~np.isnan(obs_data_intact)
+        obs_data = np.nan_to_num(evals, copy=True)
+        obs_data = obs_data.reshape(shp)
+        # obs_intact = np.nan_to_num(obs_intact, copy=True)
+    target_mask = obs_mask - mask
+    return obs_data, obs_mask, mask, target_mask
 
 def get_mask_mnr(sample, k):
     """Get mask of random segments (non-missing at random) across channels based on k,

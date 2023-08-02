@@ -7,7 +7,7 @@ import torch
 import torch.nn as nn
 
 from utils.util import find_max_epoch, print_size, training_loss, calc_diffusion_hyperparams
-from utils.util import get_mask_mnr, get_mask_bm, get_mask_rm
+from utils.util import get_mask_mnr, get_mask_bm, get_mask_rm, parse_data
 
 from imputers.DiffWaveImputer import DiffWaveImputer
 from imputers.SSSDSAImputer import SSSDSAImputer
@@ -119,17 +119,17 @@ def train(output_directory,
     while n_iter < n_iters + 1:
         for batch in training_data:
 
-            if masking == 'rm':
-                transposed_mask = get_mask_rm(batch[0], missing_k)
-            elif masking == 'mnr':
-                transposed_mask = get_mask_mnr(batch[0], missing_k)
-            elif masking == 'bm':
-                transposed_mask = get_mask_bm(batch[0], missing_k)
-
-            mask = transposed_mask.permute(1, 0)
-            mask = mask.repeat(batch.size()[0], 1, 1).float().cuda()
-            loss_mask = ~mask.bool()
-            batch = batch.permute(0, 2, 1)
+            # if masking == 'rm':
+            #     transposed_mask = get_mask_rm(batch[0], missing_k)
+            # elif masking == 'mnr':
+            #     transposed_mask = get_mask_mnr(batch[0], missing_k)
+            # elif masking == 'bm':
+            #     transposed_mask = get_mask_bm(batch[0], missing_k)
+            batch, obs_mask, mask, loss_mask = parse_data(batch)
+            # mask = transposed_mask.permute(1, 0)
+            # mask = mask.repeat(batch.size()[0], 1, 1).float().cuda()
+            # loss_mask = ~mask.bool()
+            # batch = batch.permute(0, 2, 1)
 
             assert batch.size() == mask.size() == loss_mask.size()
 
