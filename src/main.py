@@ -109,7 +109,7 @@ def train(output_directory,
     training_data = np.load(trainset_config['train_data_path'])
     training_data = np.array_split(training_data, 2, axis=0)
     training_data = np.array(training_data)
-    training_data = torch.from_numpy(training_data).float().cuda()
+    # training_data = torch.from_numpy(training_data).float().cuda()
     print('Data loaded')
 
     
@@ -126,6 +126,7 @@ def train(output_directory,
             # elif masking == 'bm':
             #     transposed_mask = get_mask_bm(batch[0], missing_k)
             batch, obs_mask, mask, loss_mask = parse_data(batch)
+            batch = torch.from_numpy(batch).float().cuda()
             # mask = transposed_mask.permute(1, 0)
             # mask = mask.repeat(batch.size()[0], 1, 1).float().cuda()
             # loss_mask = ~mask.bool()
