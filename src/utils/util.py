@@ -194,7 +194,7 @@ def training_loss(net, loss_fn, X, diffusion_hyperparams, only_generate_missing=
         (transformed_X, cond, mask, diffusion_steps.view(B, 1),))  # predict \epsilon according to \epsilon_\theta
 
     if only_generate_missing == 1:
-        return loss_fn(epsilon_theta[loss_mask], z[loss_mask])
+        return loss_fn(epsilon_theta * loss_mask, z * loss_mask)
     elif only_generate_missing == 0:
         return loss_fn(epsilon_theta, z)
 
@@ -288,9 +288,9 @@ def parse_data(sample, rate=0.2, is_test=False, length=100, include_features=Non
         obs_data = np.nan_to_num(evals, copy=True)
         obs_data = obs_data.reshape(shp)
         # obs_intact = np.nan_to_num(obs_intact, copy=True)
-    # mask = mask.astype()
-    # obs_mask = obs_mask.astype(int)
-    target_mask = obs_mask ^ mask
+    mask = mask.astype(float)
+    obs_mask = obs_mask.astype(float)
+    target_mask = obs_mask - mask
     # print(f"obs: {obs_mask.shape}, mask: {mask.shape}, target: {mask.shape}")
     return obs_data, obs_mask, mask, target_mask
 
