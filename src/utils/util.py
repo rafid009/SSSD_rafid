@@ -288,9 +288,9 @@ def parse_data(sample, rate=0.2, is_test=False, length=100, include_features=Non
         obs_data = np.nan_to_num(evals, copy=True)
         obs_data = obs_data.reshape(shp)
         # obs_intact = np.nan_to_num(obs_intact, copy=True)
-    mask = mask.astype(int)
-    obs_mask = obs_mask.astype(int)
-    target_mask = obs_mask - mask
+    # mask = mask.astype()
+    # obs_mask = obs_mask.astype(int)
+    target_mask = obs_mask ^ mask
     # print(f"obs: {obs_mask.shape}, mask: {mask.shape}, target: {mask.shape}")
     return obs_data, obs_mask, mask, target_mask
 
