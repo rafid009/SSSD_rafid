@@ -190,6 +190,7 @@ def training_loss(net, loss_fn, X, diffusion_hyperparams, only_generate_missing=
         z = audio * mask.float() + z * (1 - mask).float()
     transformed_X = torch.sqrt(Alpha_bar[diffusion_steps]) * audio + torch.sqrt(
         1 - Alpha_bar[diffusion_steps]) * z  # compute x_t from q(x_t|x_0)
+    print(f"transormed X: {transformed_X}")
     epsilon_theta = net(
         (transformed_X, cond, mask, diffusion_steps.view(B, 1),))  # predict \epsilon according to \epsilon_\theta
     print(f"eps theta: {epsilon_theta}")
