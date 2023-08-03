@@ -164,26 +164,26 @@ def train(output_directory,
 
             n_iter += 1
 
-filename = "./src/ColdHardiness_Grape_Merlot_2.csv"
-df = pd.read_csv(filename)
+# filename = "./src/ColdHardiness_Grape_Merlot_2.csv"
+# df = pd.read_csv(filename)
 
-modified_df, dormant_seasons = preprocess_missing_values(df, features, is_dormant=True)
-season_df, season_array, max_length = get_seasons_data(modified_df, dormant_seasons, features, is_dormant=True)
+# modified_df, dormant_seasons = preprocess_missing_values(df, features, is_dormant=True)
+# season_df, season_array, max_length = get_seasons_data(modified_df, dormant_seasons, features, is_dormant=True)
 
-train_season_df = season_df.drop(season_array[-1], axis=0)
-train_season_df = train_season_df.drop(season_array[-2], axis=0)
-mean, std = get_mean_std(train_season_df, features)
-X, Y = split_XY(season_df, max_length, season_array, features)
+# train_season_df = season_df.drop(season_array[-1], axis=0)
+# train_season_df = train_season_df.drop(season_array[-2], axis=0)
+# mean, std = get_mean_std(train_season_df, features)
+# X, Y = split_XY(season_df, max_length, season_array, features)
 
-train_X = X[:-2]
-test_X = X[-2:]
+# train_X = X[:-2]
+# test_X = X[-2:]
 
-input_folder = './datasets/agaid'
-if not os.path.isdir(input_folder):
-    os.makedirs(input_folder)
+# input_folder = './datasets/agaid'
+# if not os.path.isdir(input_folder):
+#     os.makedirs(input_folder)
 
-np.save(f"{input_folder}/train_agaid.npy", train_X)
-np.save(f"{input_folder}/test_agaid.npy", test_X)
+# np.save(f"{input_folder}/train_agaid.npy", train_X)
+# np.save(f"{input_folder}/test_agaid.npy", test_X)
 
 config_path = "./src/config/config_SSSDS4.json"
 
