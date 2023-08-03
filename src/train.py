@@ -107,8 +107,8 @@ def train(output_directory,
     training_data = np.load(trainset_config['train_data_path'])
     print(f"training data: {training_data.shape}")
     training_data = np.array_split(training_data, 340, 0)
-    training_data = np.array(training_data, dtype=np.float32)
-    training_data = torch.from_numpy(training_data).float().cuda()
+    # training_data = np.array(training_data, dtype=np.float32)
+    # training_data = torch.from_numpy(training_data).float().cuda()
     print('Data loaded')
 
     
@@ -117,7 +117,7 @@ def train(output_directory,
     n_iter = ckpt_iter + 1
     while n_iter < n_iters + 1:
         for batch in training_data:
-
+            batch = torch.from_numpy(batch).float().cuda()
             if masking == 'rm':
                 transposed_mask = get_mask_rm(batch[0], missing_k)
             elif masking == 'mnr':
