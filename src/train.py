@@ -156,7 +156,7 @@ def train(output_directory,
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument('-c', '--config', type=str, default='config/SSSDS4.json',
+    parser.add_argument('-c', '--config', type=str, default='./src/config/config_SSSDS4.json',
                         help='JSON file for configuration')
 
     args = parser.parse_args()
