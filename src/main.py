@@ -12,7 +12,10 @@ from utils.util import get_mask_mnr, get_mask_bm, get_mask_rm, parse_data
 from imputers.DiffWaveImputer import DiffWaveImputer
 from imputers.SSSDSAImputer import SSSDSAImputer
 from imputers.SSSDS4Imputer import SSSDS4Imputer
-
+import warnings
+warnings.filterwarnings("ignore")
+np.set_printoptions(threshold=np.inf)
+torch.set_printoptions(threshold=np.inf)
 
 
 def train(output_directory,
@@ -147,9 +150,9 @@ def train(output_directory,
 
             loss.backward()
             optimizer.step()
-
-            if n_iter % iters_per_logging == 0:
-                print("iteration: {} \tloss: {}".format(n_iter, loss.item()))
+            print(f"iteration: {n_iter} \tloss: {loss.item()}")
+            # if n_iter % iters_per_logging == 0:
+            #     print("iteration: {} \tloss: {}".format(n_iter, loss.item()))
 
             # save checkpoint
             if n_iter > 0 and n_iter % iters_per_ckpt == 0:
