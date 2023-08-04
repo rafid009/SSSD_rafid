@@ -128,7 +128,9 @@ def train(output_directory,
             batch = torch.from_numpy(batch).float().cuda()
             transposed_mask = torch.from_numpy(transposed_mask).float().cuda()
             mask = transposed_mask.permute(0, 2, 1)
+            
             loss_mask = torch.from_numpy(loss_mask).float().cuda()
+            loss_mask = loss_mask.permute(0, 2, 1)
             # mask = mask.repeat(batch.size()[0], 1, 1).float().cuda()
             # loss_mask = ~mask.bool()
             batch = batch.permute(0, 2, 1)
