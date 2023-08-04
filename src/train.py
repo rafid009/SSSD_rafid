@@ -103,7 +103,7 @@ def train(output_directory,
     ### Custom data loading and reshaping ###
         
         
-    num_split = 679
+    num_split = 2
     training_data = np.load(trainset_config['train_data_path'])
     print(f"training data: {training_data.shape}")
 
