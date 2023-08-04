@@ -21,7 +21,7 @@
     },
     "train_config": {
         "output_directory": "./results/ETTm1/",
-        "ckpt_iter": "",
+        "ckpt_iter": -1,
         "iters_per_ckpt": 100,
         "iters_per_logging": 100,
         "n_iters": 3000,
