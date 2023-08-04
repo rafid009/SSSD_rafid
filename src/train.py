@@ -117,7 +117,7 @@ def train(output_directory,
     n_iter = ckpt_iter + 1
     while n_iter < n_iters + 1:
         for batch in training_data:
-            batch = torch.from_numpy(batch).float().cuda()
+            
             # if masking == 'rm':
             #     transposed_mask = get_mask_rm(batch[0], missing_k)
             # elif masking == 'mnr':
@@ -125,9 +125,10 @@ def train(output_directory,
             # elif masking == 'bm':
             #     transposed_mask = get_mask_bm(batch[0], missing_k)
             batch, obs_mask, transposed_mask, loss_mask = parse_data(batch)
+            batch = torch.from_numpy(batch).float().cuda()
             mask = transposed_mask.permute(1, 0)
             mask = mask.repeat(batch.size()[0], 1, 1).float().cuda()
-            loss_mask = ~mask.bool()
+            # loss_mask = ~mask.bool()
             batch = batch.permute(0, 2, 1)
 
             assert batch.size() == mask.size() == loss_mask.size()
