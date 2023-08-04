@@ -103,7 +103,7 @@ def train(output_directory,
     ### Custom data loading and reshaping ###
         
         
-
+    num_split = 679
     training_data = np.load(trainset_config['train_data_path'])
     print(f"training data: {training_data.shape}")
 
@@ -113,7 +113,9 @@ def train(output_directory,
     for i in range(training_data.shape[0]):
         train_X[i], _, transposed_mask[i], loss_mask[i] = parse_data(training_data[i])
 
-    train_X = np.array_split(train_X, 679, 0)
+    train_X = np.array_split(train_X, num_split, 0)
+    transposed_mask = np.array_split(transposed_mask, num_split, 0)
+    loss_mask = np.array_split(loss_mask, num_split, 0)
     # training_data = np.array(training_data, dtype=np.float32)
     # training_data = torch.from_numpy(training_data).float().cuda()
     print('Data loaded')
