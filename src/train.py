@@ -106,7 +106,14 @@ def train(output_directory,
 
     training_data = np.load(trainset_config['train_data_path'])
     print(f"training data: {training_data.shape}")
-    training_data = np.array_split(training_data, 679, 0)
+
+    transposed_mask = np.zeros_like(training_data)
+    loss_mask = np.zeros_like(training_data)
+    train_X = np.zeros_like(training_data)
+    for i in range(training_data.shape[0]):
+        train_X[i], _, transposed_mask[i], loss_mask[i] = parse_data(training_data[i])
+
+    train_X = np.array_split(train_X, 679, 0)
     # training_data = np.array(training_data, dtype=np.float32)
     # training_data = torch.from_numpy(training_data).float().cuda()
     print('Data loaded')
@@ -116,7 +123,8 @@ def train(output_directory,
     # training
     n_iter = ckpt_iter + 1
     while n_iter < n_iters + 1:
-        for batch in training_data:
+        i = 0
+        for batch in train_X:
             
             # if masking == 'rm':
             #     transposed_mask = get_mask_rm(batch[0], missing_k)
@@ -124,22 +132,22 @@ def train(output_directory,
             #     transposed_mask = get_mask_mnr(batch[0], missing_k)
             # elif masking == 'bm':
             #     transposed_mask = get_mask_bm(batch[0], missing_k)
-            batch, obs_mask, transposed_mask, loss_mask = parse_data(batch)
-            batch = torch.from_numpy(batch).float().cuda()
-            transposed_mask = torch.from_numpy(transposed_mask).float().cuda()
-            mask = transposed_mask.permute(0, 2, 1)
             
-            loss_mask = torch.from_numpy(loss_mask).float().cuda()
-            loss_mask = loss_mask.permute(0, 2, 1)
+            batch = torch.from_numpy(batch).float().cuda()
+            mask = torch.from_numpy(transposed_mask[i]).float().cuda()
+            mask = mask.permute(0, 2, 1)
+            
+            target_mask = torch.from_numpy(loss_mask[i]).float().cuda()
+            target_mask = target_mask.permute(0, 2, 1)
             # mask = mask.repeat(batch.size()[0], 1, 1).float().cuda()
             # loss_mask = ~mask.bool()
             batch = batch.permute(0, 2, 1)
 
-            assert batch.size() == mask.size() == loss_mask.size()
+            assert batch.size() == mask.size() == target_mask.size()
 
             # back-propagation
             optimizer.zero_grad()
-            X = batch, batch, mask, loss_mask
+            X = batch, batch, mask, target_mask
             loss = training_loss(net, nn.MSELoss(), X, diffusion_hyperparams,
                                  only_generate_missing=only_generate_missing)
 
