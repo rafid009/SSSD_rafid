@@ -144,7 +144,7 @@ def train(output_directory,
             # mask = mask.repeat(batch.size()[0], 1, 1).float().cuda()
             # loss_mask = ~mask.bool()
             batch = batch.permute(0, 2, 1)
-            print(f"batch: {batch.shape}, mask: {mask.shape}, target: {target_mask.shape}")
+            # print(f"batch: {batch.shape}, mask: {mask.shape}, target: {target_mask.shape}")
             assert batch.size() == mask.size() == target_mask.size()
 
             # back-propagation
@@ -166,7 +166,7 @@ def train(output_directory,
                             'optimizer_state_dict': optimizer.state_dict()},
                            os.path.join(output_directory, checkpoint_name))
                 print('model at iteration %s is saved' % n_iter)
-
+            i += 1
             n_iter += 1
 
 
