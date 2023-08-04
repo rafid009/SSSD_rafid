@@ -20,7 +20,7 @@
         "s4_layernorm":1
     },
     "train_config": {
-        "output_directory": "./results/ETTm1/",
+        "output_directory": "./results/agaid/",
         "ckpt_iter": -1,
         "iters_per_ckpt": 100,
         "iters_per_logging": 100,
@@ -32,13 +32,13 @@
         "missing_k": 90
     },
     "trainset_config":{
-        "train_data_path": "./datasets/ETTm1/train_ettm1_1056.npy",
-        "test_data_path": "./datasets/ETTm1/test_ettm1_1056.npy",
+        "train_data_path": "./datasets/agaid/train_agaid.npy",
+        "test_data_path": "./datasets/agaid/test_agaid.npy",
         "segment_length":100,
         "sampling_rate": 100
     },
     "gen_config":{
-        "output_directory": "./results/ETTm1/",
-        "ckpt_path": "./results/ETTm1/"
+        "output_directory": "./results/agaid/",
+        "ckpt_path": "./results/agaid/"
     }
 }
