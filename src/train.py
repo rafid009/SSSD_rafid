@@ -119,7 +119,7 @@ def train(output_directory,
     # training_data = np.array(training_data, dtype=np.float32)
     # training_data = torch.from_numpy(training_data).float().cuda()
     print('Data loaded')
-
+    print(f"X: {train_X[-1]}\nmask: {transposed_mask[-1]}\nloss: {loss_mask[-1]}")
     
     
     # training
