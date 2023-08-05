@@ -1,7 +1,7 @@
 {   
     "diffusion_config":{
         "T": 100,
-        "beta_0": 0.00001,
+        "beta_0": 0.01,
         "beta_T": 0.02
     },
     "wavenet_config": {
