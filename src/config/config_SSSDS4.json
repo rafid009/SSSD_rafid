@@ -25,7 +25,7 @@
         "iters_per_ckpt": 100,
         "iters_per_logging": 100,
         "n_iters": 3000,
-        "learning_rate": 1e-4,
+        "learning_rate": 1e-5,
         "only_generate_missing": 1,
         "use_model": 2,
         "masking": "rm",
