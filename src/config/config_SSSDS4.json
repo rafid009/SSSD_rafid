@@ -2,7 +2,7 @@
     "diffusion_config":{
         "T": 50,
         "beta_0": 0.0001,
-        "beta_T": 0.9
+        "beta_T": 0.02
     },
     "wavenet_config": {
         "in_channels": 21, 
@@ -20,25 +20,25 @@
         "s4_layernorm":1
     },
     "train_config": {
-        "output_directory": "./results/agaid/",
+        "output_directory": "./results/ETTm1/",
         "ckpt_iter": -1,
         "iters_per_ckpt": 100,
         "iters_per_logging": 100,
         "n_iters": 7000,
-        "learning_rate": 2e-5,
+        "learning_rate": 2e-4,
         "only_generate_missing": 1,
         "use_model": 2,
         "masking": "rm",
         "missing_k": 90
     },
     "trainset_config":{
-        "train_data_path": "./datasets/agaid/train_agaid.npy",
-        "test_data_path": "./datasets/agaid/test_agaid.npy",
+        "train_data_path": "./datasets/ETTm1/train_ettm1_1056.npy",
+        "test_data_path": "./datasets/ETTm1/test_ettm1_1056.npy",
         "segment_length":100,
         "sampling_rate": 100
     },
     "gen_config":{
-        "output_directory": "./results/agaid/",
-        "ckpt_path": "./results/agaid/"
+        "output_directory": "./results/ETTm1/",
+        "ckpt_path": "./results/ETTm1/"
     }
 }
