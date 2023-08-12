@@ -5,8 +5,8 @@
         "beta_T": 0.02
     },
     "wavenet_config": {
-        "in_channels": 21, 
-        "out_channels":21,
+        "in_channels": 7, 
+        "out_channels":7,
         "num_res_layers": 36,
         "res_channels": 256, 
         "skip_channels": 256,
