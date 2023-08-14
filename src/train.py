@@ -103,8 +103,9 @@ def train(output_directory,
     ### Custom data loading and reshaping ###
         
         
-    num_split = 2
+    
     training_data = np.load(trainset_config['train_data_path'])
+    num_split = training_data.shape[0] / 16
     print(f"training data: {training_data.shape}")
 
     transposed_mask = np.zeros_like(training_data)
